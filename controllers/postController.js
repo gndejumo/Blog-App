@@ -1,25 +1,48 @@
-let posts = [
-    {id: 1, title: "First Post", content: "Hello World"},
-    {id: 2, title: "React Post", content: "CRUD example"}
-]
+import Post from "../models/Post"
+
 
 // Get post
-const getPosts = (_req, res) => {
-    res.status(200).send(posts)
+const getAllPosts = async (_req, res, next) => {
+    try {
+        const posts = Post.find().populate("author");
+        res.status(200).json(posts)
+    } catch (err) {
+        next(err);
+    }
+} 
+
+
+
+const getPostById = async (req, res, next) => {
+    try {
+        const post = await Post.find(req.params.id)
+        if (!post) {
+            res.status(404).json({message: "Post not found"})
+        }
+        res.status(200).json(post)
+    }
+    catch (err) {
+        next (err)
+    }
+
 }
 
 // Create Post 
 
-const createPost = (req, res) => {
-    const newPost = {
-        id: Date.now(),
-        title: req.body.title,
-        content: req.body.content
+const createPost = async (req, res, next) => {
+    try {
+        const newPost = Post.create({
+            title: req.body.title,
+            content: req.body.content,
+            author: req.user?._id
+        });
+        res.status(201).json({
+            message: "Created Post Successfullt",
+            data: newPost
+        });
+    } catch (err) {
+        next(err)
     }
-    posts.push(newPost)
-    return res.status(201).send({
-        message: "Created post successfully",
-    })
 }
 
 // Update Post
@@ -37,6 +60,7 @@ const updatePost = (req, res) => {
         message: "Successfully updated post",
         data: posts
     })
+    console.log(posts)
 }
 // Delete Post
 const deletePost = (req, res) => {
@@ -55,4 +79,4 @@ const deletePost = (req, res) => {
 
 }
 
-module.exports = { createPost, updatePost, getPosts, deletePost }
+module.exports = { createPost, updatePost, getAllPosts, deletePost, getPostById }

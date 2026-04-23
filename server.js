@@ -16,11 +16,11 @@ app.get("/", (req, res) => {
 // Register API end point
 app.use("/api/posts", postRoutes)
 
-mongoose.connect(process.env.DB_URL).then(() => {
-    console.log('DB successfully connected')
-})
-
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on localhost: ${PORT}`)
-})
+mongoose.connect(process.env.DB_URL).then(() => {
+    console.log("DB connected successfully");
+
+    app.listen(PORT, () => {
+        console.log(`Server is running on the http://localhost:${PORT}`)
+    })
+}) .catch((err) => console.log("DB connection:", err))
