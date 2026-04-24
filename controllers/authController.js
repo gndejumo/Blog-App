@@ -62,9 +62,33 @@ const registerUser = async (req, res, next) => {
 
 const logoutUser = async (req, res, next) => {
     try {
+        // Get the authHeader
+        const authHeader = req.header.authorization;
+        // Check if may token
+        if (!authHeader) {
+            return res.status(401).json({
+                message: "No token provided"
+            })
+        } 
+        // Extract the token by separating it with " " and 
+        // making it array and then get index 1
+        const token = authHeader.split(" ")[1]
+        // Validate natin ang format
+        if (!token) {
+            return res.status(401).json({
+                message: "Invalid token format"
+            })
+        }
+        await Blacklist.create({token});
+        console.log("Logout successfull: ", req.user?.id)
         
-    } catch (error) {
+        // Return success message
+        return res.status(200).json({
+            message: "Logged out successfully"
+        })
         
+    } catch (err) {
+        next(err)
     }
 }
 
