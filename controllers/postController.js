@@ -1,4 +1,4 @@
-import Post from "../models/Post"
+const Post = require('../models/Post')
 
 
 // Get post
