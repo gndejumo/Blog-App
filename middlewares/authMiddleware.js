@@ -44,5 +44,15 @@ const verify = async (req, res, next) => {
     }
 } 
 
+const verifyAdmin = (req, res, next) => {
+    if (req.user.role === "admin") {
+        next()
+    } else {
+        return res.status(403).json({
+            auth: "Failed",
+            message: "Action Forbidden"
+        })
+    }
+}
 
-module.exports = {createAccessToken, verify}
+module.exports = {createAccessToken, verify, verifyAdmin}
