@@ -2,8 +2,12 @@ const User = require('../models/User')
 
 const getAllUsers = async (_req, res, next) => {
     try {
-        const users = await User.find();  
-        res.status(200).json(users)
+        const users = await User.find();
+        const safeUser = users.map(user => {
+            const {password: _password, ...safeUser} = user.toObject();
+            return safeUser;
+        })
+        res.status(200).json(safeUser)
     } catch (err) {
         next (err)
     }
@@ -13,13 +17,17 @@ const getAllUsers = async (_req, res, next) => {
 const getUserProfile = async (req, res, next) => {
     try {
         const id = req.params.id
-        const user = await User.findById(id);
+        const user = await User.findById(id).populate({
+            path: "posts",
+            select: ["title", "content"]
+        })
         if (!user) {
             return res.status(404).json({
                 message: "User not found"
             })
         }
-        res.status(200).json(user)
+        const {password: _password, ...safeUser} = user.toObject();
+        res.status(200).json(safeUser)
     } catch (err ) {
         next(err)
     }
@@ -27,18 +35,26 @@ const getUserProfile = async (req, res, next) => {
 
 const setAsAdmin = async (req, res, next) => {
     try {
-        const  userId= req.params.id
+        if (req.user.role !== "admin"){
+            return res.status(403).json({
+                message: "Unathorized"
+            })
+        }
+        const userId= req.params.id
         const updatedUser = await User.findByIdAndUpdate(userId, 
             {role: "admin"},
             {new: true}
         )
+        
         if (!updatedUser) {
             return res.status(404).json({
                 message: "User not found"
             })
-        } res.status(200).json({
+        } 
+        const {password: _password, ...safeUser} = updatedUser.toObject()
+        res.status(200).json({
             message: "Updated user to admin",
-            user: updatedUser
+            user: safeUser
         })
 
     } catch (err) {
@@ -63,7 +79,7 @@ const deleteUser = async (req, res, next) => {
         message: "Deleted the user successfully",
         user: user
         })
-    } catch (error) {
+    } catch (err) {
         next(err)
     }
 }

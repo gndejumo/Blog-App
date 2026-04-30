@@ -6,7 +6,8 @@ const userSchema = new Schema({
     lastName:  String,
     email:  {type: String, unique: true},
     password: String,
-    role: {type: String, enum: ["user", "admin"], default: "user"}
+    role: {type: String, enum: ["user", "admin"], default: "user"},
+    posts: [{type: mongoose.Schema.Types.ObjectId, ref: "Post" }]
 })
 
 module.exports = model('User', userSchema)

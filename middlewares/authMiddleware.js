@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-
+const Blacklist = require('../models/Blacklist')
 
 // Token Creation
 // jwt.sign(payload, secret, options)

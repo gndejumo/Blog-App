@@ -4,7 +4,6 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-console.log(process.env.DB_URL)
 
 // Modules routes importation
 const postRoutes = require ("./routes/postRoutes")

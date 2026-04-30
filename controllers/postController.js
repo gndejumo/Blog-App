@@ -1,11 +1,17 @@
 const Post = require('../models/Post')
-
+const User = require('../models/User')
 
 // Get post
 const getAllPosts = async (_req, res, next) => {
     try {
-        const posts = await Post.find().populate("author");
-        res.status(200).json(posts)
+        const posts = await Post.find().populate({
+            path: "author",
+            select: ["firstName", "lastName"]
+        })
+        res.status(200).json({
+            message: "Successfully retrieved all posts.",
+            data: posts
+        })
     } catch (err) {
         next(err);
     }
@@ -33,10 +39,14 @@ const createPost = async (req, res, next) => {
         const newPost = await Post.create({
             title: req.body.title,
             content: req.body.content,
-            author: req.user?._id
+            author: req.user?.id
         });
+        await User.findByIdAndUpdate(req.user?.id, {
+            $push: {posts: newPost._id}
+        })
+        console.log("USER:", req.user);
         res.status(201).json({
-            message: "Created Post Successfullt",
+            message: "Created Post Successfully!",
             data: newPost
         });
     } catch (err) {
@@ -73,17 +83,23 @@ const updatePost = async (req, res, next) => {
 // Delete Post
 const deletePost = async (req, res, next) => {
     try {
+        // logged the id 
         const id = req.params.id;
-        const post = await Post.findByIdAndDelete(id);
-
+        // find the Id kung nasa database
+        const post = await Post.findById(id);
+        // check kung totoong nag eexist sa DB
         if (!post) {
             return res.status(404).json({
                 message: "Post not found"
             })
         }
-        if (post.author.toString() !== req.user._id.toString()) {
+        //check authorization bago mag delete kung ikaw bang author ng post
+        if (post.author?.toString() !== req.user?.id.toString()) {
             return res.status(403).json({ message: "Unathorized"})
         }
+        //delete mo na if nameet na lahat ng conditions
+        await Post.findByIdAndDelete(id);
+        // deleted successfully 
         res.status(200).json({
             message: "Post has been successfully deleted"
         })
