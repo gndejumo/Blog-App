@@ -2,13 +2,14 @@ import {useState , useEffect} from 'react'
 import API from "../../services/api"
 
 
-function HomePage() {
-  const [post, setPost] = useState([])
+function HomePage () {
+  const [posts, setPosts] = useState([])
 
   const fetchPosts = async () => {
     try {
       const res = await API.get('/api/posts/')
-      setPost(res.data)
+      console.log(res.data.data)
+      setPosts(res.data.data)
     } catch (err) {
       console.log(err.response?.data)
     }
@@ -20,7 +21,7 @@ function HomePage() {
 
   return (
     <div>
-      {post.map((post) => 
+      {posts.map((post) => 
       <div key={post._id}>
         <h2>{post.title}</h2>
         <p>{post.content}</p>
