@@ -1,6 +1,6 @@
 import {useState , useEffect} from 'react'
 import API from "../../services/api"
-
+import './Home.css'
 
 function HomePage () {
   const [posts, setPosts] = useState([])
@@ -20,12 +20,30 @@ function HomePage () {
   }, [])
 
   return (
-    <div>
-      {posts.map((post) => 
-      <div key={post._id}>
-        <h2>{post.title}</h2>
-        <p>{post.content}</p>
-      </div>)}
+    <div className="home-wrapper">
+      <div className="home-header">
+        <div>
+          <p className="home-eyebrow">Latest posts</p>
+          <h1 className="home-title">Your Feed</h1>
+        </div>
+        <a href="/create" className="btn-new-post">+ New Post</a>
+      </div>
+      <div className="posts-feed">
+        {posts.length === 0 ? (
+          <div className="posts-empty">
+            <span>No posts yet</span>
+            Be the first to write something.
+          </div>
+        ) : posts.map((post) => (
+          <div key={post._id} className="post-card">
+            <h2 className="post-card-title">{post.title}</h2>
+            <p className="post-card-content">{post.content}</p>
+            <div className="post-card-footer">
+              <button className="btn-read-more">Read more</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
