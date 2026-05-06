@@ -84,4 +84,23 @@ const deleteUser = async (req, res, next) => {
     }
 }
 
-module.exports = {getAllUsers, getUserProfile, setAsAdmin, deleteUser}
+const getMe = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user?.id).select('-password')
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            })
+        } 
+        const {password: _password, ...safeUser} = user.toObject()
+            res.status(200).json({
+            message: "Successfully retrieved profile",
+            data: safeUser
+        })
+
+    } catch (err) {
+        next(err)
+    }
+}
+
+module.exports = {getAllUsers, getUserProfile, setAsAdmin, deleteUser, getMe}

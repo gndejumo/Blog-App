@@ -5,6 +5,7 @@ const { verify } = require('../middlewares/authMiddleware')
 const {validateObjectId} = require('../middlewares/validateObjectId')
 
 router.get('/',postController.getAllPosts)
+router.get('/my-posts', verify, postController.getMyPosts)
 router.get('/:id', verify,validateObjectId, postController.getPostById)
 router.post('/', verify, postController.createPost)
 router.patch('/:id', verify,validateObjectId, postController.updatePost)

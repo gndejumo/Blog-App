@@ -108,4 +108,19 @@ const deletePost = async (req, res, next) => {
     }
 }
 
-module.exports = { createPost, updatePost, getAllPosts, deletePost, getPostById }
+const getMyPosts = async (req, res, next) => {
+    try {
+        const posts = await Post.find({author: req.user?.id}).populate({
+            path: "author",
+            select: ['firstName', 'lastName']
+        })
+        res.status(200).json({
+            message: "Successfully retrieved your posts.",
+            data: posts
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+module.exports = { createPost, updatePost, getAllPosts, deletePost, getPostById, getMyPosts }

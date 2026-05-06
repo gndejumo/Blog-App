@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 import API from '../../services/api'
 import './CreatePost.css'
 
@@ -6,13 +7,23 @@ import './CreatePost.css'
 function CreatePostPage () {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+    const [alert, setAlert] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
     const handleCreatePost = async (e) => {
         e.preventDefault()
+        setLoading(true)
+        setAlert(null)
         try {
             const res = await API.post('/api/posts/', {title, content})
             console.log(res.data)
+            setAlert({type: 'success', message: "Post Successfully Created"})
+            setTimeout(() => navigate('/'), 1500)
         } catch (error) {
             console.log(error.response?.data)
+            setAlert({ type: 'error', message: error.response?.data?.message || 'Something went wrong.' })
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -35,7 +46,12 @@ function CreatePostPage () {
             <textarea placeholder="Enter Content" onChange={e => setContent(e.target.value)} />
             </div>
             <div className="createpost-actions">
-            <button type="submit" className="btn-create">Create</button>
+                {alert && (
+                    <div className={`alert alert--${alert.type}`}>{alert.message}
+                    </div>
+                )}
+            <button type="submit" className="btn-create" disabled={loading}>
+                {loading ? <span className="spinner"/>: 'Create'}</button>
             </div>
         </form>
         </div>

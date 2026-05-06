@@ -34,11 +34,97 @@ body {
   width: 100%;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
 }
 
+/* ── Navbar ── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 64px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.navbar-brand {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.navbar-brand span {
+  color: var(--accent);
+}
+
+.navbar-links {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.nav-link {
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--ink-muted);
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink);
+}
+
+.nav-btn {
+  padding: 0.45rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #1a1200;
+  background: var(--accent);
+  transition: background 0.2s, transform 0.15s;
+}
+
+.nav-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.nav-btn--logout {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.nav-btn--logout:hover {
+  background: rgba(255, 0, 0, 0.15);
+  border-color: rgba(255, 80, 80, 0.5);
+  color: #ff6b6b;
+  transform: translateY(-1px);
+}
+
+/* ── Home wrapper ── */
 .home-wrapper {
+  flex: 1;
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
   padding: 3rem 2rem;
 
   background-image: url('../../assets/register-bg.jpg');
@@ -152,7 +238,6 @@ body {
   font-size: 14px;
   color: var(--ink-muted);
   line-height: 1.7;
-  /* clamp to 3 lines with ellipsis */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -203,7 +288,12 @@ body {
   margin-bottom: 0.5rem;
 }
 
+/* ── Responsive ── */
 @media (max-width: 600px) {
+  .navbar {
+    padding: 0 1rem;
+  }
+
   .home-wrapper {
     padding: 2rem 1rem;
   }
