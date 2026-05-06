@@ -93,13 +93,14 @@ const deletePost = async (req, res, next) => {
                 message: "Post not found"
             })
         }
-        //check authorization bago mag delete kung ikaw bang author ng post
-        if (post.author?.toString() !== req.user?.id.toString()) {
-            return res.status(403).json({ message: "Unathorized"})
+        const isAuthor = post.author?.toString() === req.user?.id.toString()
+        const isAdmin = req.user?.role
+        if (!isAuthor && !isAdmin) {
+            return res.status(403).json({
+                message: "Unauthorized"
+            })
         }
-        //delete mo na if nameet na lahat ng conditions
-        await Post.findByIdAndDelete(id);
-        // deleted successfully 
+        await Post.findByIdAndDelete(id)
         res.status(200).json({
             message: "Post has been successfully deleted"
         })

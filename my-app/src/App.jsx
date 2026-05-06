@@ -5,6 +5,7 @@ import CreatePostPage from './pages/post/CreatePostPage'
 import HomePage from './pages/post/HomePage'
 import PostDetailPage from './pages/post/PostDetailPage'
 import ProfilePage from './pages/user/ProfilePage'
+import MyPostPage from './pages/post/MyPostPage'
 
 
 function App () {
@@ -13,6 +14,7 @@ function App () {
       <Routes>
         <Route path="/" element= {<HomePage/>}/>,
         <Route path="/login" element={<LoginPage/>}/>,
+        <Route path="/my-posts" element={<MyPostPage/>}/>,
         <Route path="/register" element= {<RegisterPage/>}/>,
         <Route path="/create" element={<CreatePostPage/>}/>,
         <Route path="/post/:id" element={<PostDetailPage/>}/>,

@@ -2,6 +2,7 @@ import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import API from '../../services/api'
 import './CreatePost.css'
+import Navbar from '../../components/Navbar'
 
 
 function CreatePostPage () {
@@ -30,6 +31,8 @@ function CreatePostPage () {
 
 
     return (
+    <>
+    <Navbar />
     <div className="createpost-wrapper">
         <div className="createpost-card">
         <div className="createpost-header">
@@ -55,7 +58,9 @@ function CreatePostPage () {
             </div>
         </form>
         </div>
-    </div>
+    </div>  
+    </>
+    
     )
 }
 

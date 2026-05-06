@@ -16,7 +16,8 @@ function LoginPage() {
     setAlert(null) 
     try {
       const res = await API.post('/api/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token)
+      sessionStorage.setItem('token', res.data.token)
+      sessionStorage.setItem('user', JSON.stringify(res.data.user))
       console.log(res.data);
       setAlert({type: 'success', message: 'Login Successful! Redirecting...'})
       setTimeout(() => navigate('/'), 1500)
