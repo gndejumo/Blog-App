@@ -10,7 +10,9 @@ const postRoutes = require ("./routes/postRoutes")
 const userRoutes = require ("./routes/userRoutes")
 const authRoutes = require ("./routes/authRoutes")
 
-app.use(cors())
+app.use(cors({
+    origin: "https://blog-application-5s3r.onrender.com"
+}))
 app.use(express.json());
 
 app.get("/", (req, res) => {
