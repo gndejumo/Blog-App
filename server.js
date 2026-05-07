@@ -11,7 +11,11 @@ const userRoutes = require ("./routes/userRoutes")
 const authRoutes = require ("./routes/authRoutes")
 
 app.use(cors({
-    origin: "https://blog-app-gnd-ee.vercel.app"
+    origin: [
+        "https://blog-app-gnd-ee.vercel.app",
+        "https://blog-app-git-main-gnd-ee.vercel.app",
+        "https://blog-dzdgyvken-gnd-ee.vercel.app"
+    ]
 }))
 app.use(express.json());
 
