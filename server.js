@@ -10,13 +10,7 @@ const postRoutes = require ("./routes/postRoutes")
 const userRoutes = require ("./routes/userRoutes")
 const authRoutes = require ("./routes/authRoutes")
 
-app.use(cors({
-    origin: [
-        "https://blog-app-gnd-ee.vercel.app",
-        "https://blog-app-git-main-gnd-ee.vercel.app",
-        "https://blog-dzdgyvken-gnd-ee.vercel.app"
-    ]
-}))
+app.use(cors())
 app.use(express.json());
 
 app.get("/", (req, res) => {
